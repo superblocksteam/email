@@ -1,6 +1,6 @@
 {
   "name": "@superblocksteam/email",
-  "version": "0.1971.0",
+  "version": "0.1995.1",
   "description": "Superblocks Email Plugin",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
