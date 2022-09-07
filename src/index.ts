@@ -76,7 +76,7 @@ export default class EmailPlugin extends BasePlugin {
     actionConfiguration: EmailActionConfiguration,
     files: RequestFiles = undefined
   ): Promise<MailDataRequired> {
-    let attachments: AttachmentData[];
+    let attachments: AttachmentData[] = [];
     if (actionConfiguration.emailAttachments) {
       if (typeof actionConfiguration.emailAttachments === 'string') {
         try {
@@ -123,12 +123,13 @@ export default class EmailPlugin extends BasePlugin {
     }
 
     return {
-      from: actionConfiguration.emailFrom,
+      // This is hardcoded for all configs today
+      from: actionConfiguration.emailFrom as string,
       to: this.parseEmailAddresses(actionConfiguration.emailTo),
       cc: this.parseEmailAddresses(actionConfiguration.emailCc),
       bcc: this.parseEmailAddresses(actionConfiguration.emailBcc),
       subject: actionConfiguration.emailSubject,
-      html: actionConfiguration.emailBody,
+      html: actionConfiguration.emailBody ?? '',
       attachments: attachments
     };
   }
@@ -155,8 +156,8 @@ export default class EmailPlugin extends BasePlugin {
     );
   }
 
-  parseEmailAddresses(emailsString: string): string[] {
-    if (isEmpty(emailsString)) {
+  parseEmailAddresses(emailsString: string | undefined): string[] {
+    if (!emailsString || isEmpty(emailsString)) {
       return [];
     }
     // Trim any whitespace and remove any empty strings from the split
